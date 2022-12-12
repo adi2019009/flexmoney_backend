@@ -42,8 +42,10 @@ router.post('/enroll',async(req,res) => {
 router.post('/check_enroll',async(req,res) => {
 
 	console.log("CHECK ENROLLMENT REQUEST RECEIVED ");
-	const user = await User.findOne({email:req.body.email});
-	const findEnroll = await Enroll.findOne({user:user._id});
+	const user1 = await User.findOne({email:req.body.email});
+	if(user1===null)
+		res.send({enrollment:"NO"});
+	const findEnroll = await Enroll.findOne({user:user1});
 	if(findEnroll)
 	{
 		console.log("enrollment is ",findEnroll.batch);
@@ -52,7 +54,7 @@ router.post('/check_enroll',async(req,res) => {
      const enrollmentDate = findEnroll.fee_payment_date;
 		 var date = new Date();
 
-		 if( (date.getMonth() != enrollmentDate.getMonth() ) || (date.getFullYear() - user.dob.getFullYear()) >= 65)
+		 if( (date.getMonth() != enrollmentDate.getMonth() ) || (date.getFullYear() - user1.dob.getFullYear()) >= 65)
 		 {
 			 await Enroll.deleteOne({_id:findEnroll._id});
 			 res.send({enrollment:"NO"});

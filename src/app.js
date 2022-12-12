@@ -5,7 +5,7 @@ const userRouter = require('./routers/user')
 const enrollRouter = require('./routers/enroll')
 
 const corsOptions = {
-	origin:"*",
+	origin:"http://localhost:3000",
 }
 
 const app = express()
